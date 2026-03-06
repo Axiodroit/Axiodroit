@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AxioDroit — Votre assistant budget & droits</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b1f3a; --navy2:#1a3560;
+  --mint:#00c896; --mint-light:#e6faf5;
+  --peach:#ff7b54; --peach-light:#fff0eb;
+  --yellow:#ffd166; --yellow-light:#fffbec;
+  --blue:#3a86ff; --blue-light:#eef4ff;
+  --text:#1a1a2e; --muted:#6b7280; --subtle:#9ca3af;
+  --border:#e5e9f0; --bg:#f8fafc; --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--white);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* TYPOGRAPHY — no stretch, elegant */
+h1{font-size:clamp(32px,4vw,52px);font-weight:700;line-height:1.15;letter-spacing:-1px;}
+h2{font-size:clamp(24px,3vw,38px);font-weight:700;line-height:1.2;letter-spacing:-0.5px;}
+h3{font-size:18px;font-weight:600;line-height:1.35;}
+p{font-size:15px;line-height:1.75;color:var(--muted);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.anim{animation:fadeUp .5s ease both;}
+.d1{animation-delay:.1s;}.d2{animation-delay:.2s;}.d3{animation-delay:.3s;}.d4{animation-delay:.4s;}
+
+/* NAV */
+nav{background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 40px;position:sticky;top:0;z-index:200;}
+.nav-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px;}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--mint),var(--blue));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.logo-name{font-size:18px;font-weight:700;color:var(--navy);}
+.logo-name em{font-style:normal;color:var(--mint);}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:14px;font-weight:500;transition:color .15s;}
+.nav-links a:hover{color:var(--navy);}
+.nav-cta{background:var(--navy)!important;color:white!important;padding:9px 20px;border-radius:50px;font-weight:600!important;font-size:13.5px!important;transition:all .2s;}
+.nav-cta:hover{background:var(--mint)!important;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0d2a4a 60%,#0b3040 100%);padding:80px 40px 0;min-height:90vh;display:flex;align-items:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,200,150,.12),transparent 65%);pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-120px;left:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(58,134,255,.08),transparent 65%);pointer-events:none;}
+.hero-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 400px;gap:64px;align-items:center;position:relative;z-index:1;padding-bottom:60px;}
+
+.hero-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(0,200,150,.3);color:var(--mint);font-size:12px;font-weight:600;padding:6px 14px;border-radius:50px;margin-bottom:20px;letter-spacing:0.3px;}
+.hero-pill span{width:6px;height:6px;background:var(--mint);border-radius:50%;animation:blink 1.5s infinite;}
+.hero h1{color:white;margin-bottom:18px;}
+.hero h1 .g{color:var(--mint);}
+.hero-desc{font-size:15.5px;color:rgba(255,255,255,.6);line-height:1.8;max-width:420px;margin-bottom:30px;font-weight:400;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:44px;}
+.btn{display:inline-block;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
+.btn-mint{background:var(--mint);color:var(--navy);}
+.btn-mint:hover{background:#00dba5;transform:translateY(-1px);}
+.btn-ghost{border:1.5px solid rgba(255,255,255,.25);color:white;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.6);}
+.btn-navy{background:var(--navy);color:white;}
+.btn-navy:hover{background:var(--navy2);}
+.btn-outline{border:1.5px solid var(--border);color:var(--navy);}
+.btn-outline:hover{border-color:var(--navy);}
+.btn-warm{background:var(--yellow);color:var(--navy);}
+.btn-warm:hover{background:#ffc233;}
+
+.hero-stats{display:flex;gap:28px;}
+.hst{padding-left:20px;border-left:1px solid rgba(255,255,255,.12);}
+.hst:first-child{border:none;padding:0;}
+.hst-v{font-size:24px;font-weight:700;color:white;letter-spacing:-0.5px;}
+.hst-v em{font-style:normal;color:var(--mint);}
+.hst-l{font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:0.8px;margin-top:1px;}
+
+/* HERO CARD */
+.hero-card{background:white;border-radius:20px;padding:24px;box-shadow:0 32px 64px rgba(0,0,0,.25);animation:float 4s ease-in-out infinite;}
+.hc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.hc-brand{font-size:14px;font-weight:700;color:var(--navy);}
+.hc-brand em{font-style:normal;color:var(--mint);}
+.hc-status{background:var(--mint-light);color:var(--mint);font-size:11px;font-weight:600;padding:4px 11px;border-radius:50px;}
+.hc-highlight{background:var(--peach-light);border-radius:12px;padding:13px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.hc-hl-info strong{font-size:13px;font-weight:700;color:var(--text);display:block;}
+.hc-hl-info span{font-size:11.5px;color:var(--muted);}
+.hc-hl-val{font-size:19px;font-weight:700;color:var(--peach);white-space:nowrap;}
+.hc-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.hc-row{background:var(--bg);border-radius:9px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;}
+.hc-row-name{font-size:12.5px;color:var(--muted);}
+.hc-row-val{font-size:13px;font-weight:700;}
+.green{color:var(--mint);}
+.red{color:#ef4444;}
+.hc-total{background:var(--navy);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;}
+.hct-l{font-size:10.5px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:0.5px;}
+.hct-note{font-size:9.5px;color:rgba(255,255,255,.2);margin-top:3px;}
+.hct-v{font-size:28px;font-weight:700;color:var(--mint);letter-spacing:-1px;}
+
+/* TRUST BAR */
+.trust{background:var(--bg);border-bottom:1px solid var(--border);padding:14px 40px;}
+.trust-in{max-width:1100px;margin:0 auto;display:flex;justify-content:center;gap:36px;flex-wrap:wrap;}
+.ti{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);font-weight:500;}
+.ti-dot{width:7px;height:7px;border-radius:50%;background:var(--mint);}
+
+/* SECTIONS */
+.sec{padding:80px 40px;}
+.sec-alt{background:var(--bg);}
+.sec-in{max-width:1100px;margin:0 auto;}
+.tag{display:inline-block;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:12px;}
+.tag-mint{background:var(--mint-light);color:var(--mint);}
+.tag-blue{background:var(--blue-light);color:var(--blue);}
+.tag-peach{background:var(--peach-light);color:var(--peach);}
+.tag-yellow{background:var(--yellow-light);color:#92400e;}
+
+/* OFFRES */
+.offres-intro{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin:36px 0 44px;}
+.offres-intro p{font-size:14.5px;color:var(--muted);line-height:1.8;}
+.offres-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.offre{background:white;border:1.5px solid var(--border);border-radius:20px;padding:28px;display:flex;flex-direction:column;position:relative;transition:all .2s;}
+.offre:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.08);}
+.offre.star{background:var(--navy);border-color:var(--navy);}
+.offre.gold{background:linear-gradient(160deg,#0f1e35,#0d2440);border-color:#1e3a5f;}
+.badge-top{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;padding:5px 16px;border-radius:50px;white-space:nowrap;}
+.badge-star{background:var(--mint);color:var(--navy);}
+.badge-gold{background:var(--yellow);color:var(--navy);}
+.off-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--subtle);margin-bottom:14px;display:block;}
+.offre.star .off-label{color:rgba(255,255,255,.3);}
+.offre.gold .off-label{color:var(--yellow);opacity:.7;}
+.off-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+.ico-free{background:var(--blue-light);}
+.ico-ess{background:var(--mint-light);}
+.ico-prem{background:var(--yellow-light);}
+.off-name{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.offre.star .off-name,.offre.gold .off-name{color:white;}
+.off-price{font-size:38px;font-weight:700;color:var(--navy);letter-spacing:-1.5px;line-height:1;margin:12px 0 2px;}
+.offre.star .off-price{color:white;}
+.offre.gold .off-price{color:var(--yellow);}
+.off-freq{font-size:11.5px;color:var(--subtle);margin-bottom:14px;}
+.offre.star .off-freq,.offre.gold .off-freq{color:rgba(255,255,255,.3);}
+.off-sep{height:1px;background:var(--border);margin:14px 0;}
+.offre.star .off-sep,.offre.gold .off-sep{background:rgba(255,255,255,.08);}
+.off-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:18px;}
+.offre.star .off-desc,.offre.gold .off-desc{color:rgba(255,255,255,.45);}
+.off-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;flex:1;}
+.off-list li{font-size:13px;display:flex;align-items:flex-start;gap:8px;line-height:1.5;color:var(--text);}
+.offre.star .off-list li,.offre.gold .off-list li{color:rgba(255,255,255,.7);}
+.off-list li.no{opacity:.3;}
+.ck{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;margin-top:1px;}
+.ck-y{background:var(--mint-light);color:var(--mint);}
+.offre.star .ck-y{background:rgba(0,200,150,.2);color:var(--mint);}
+.offre.gold .ck-y{background:rgba(255,209,102,.2);color:var(--yellow);}
+.ck-n{background:var(--bg);color:var(--border);}
+.off-btn{display:block;text-align:center;padding:12px;border-radius:50px;font-size:13.5px;font-weight:600;text-decoration:none;transition:all .15s;margin-top:auto;}
+.ob-border{border:1.5px solid var(--border);color:var(--navy);}
+.ob-border:hover{border-color:var(--navy);background:var(--navy);color:white;}
+.ob-mint{background:var(--mint);color:var(--navy);}
+.ob-mint:hover{background:#00dba5;}
+.ob-yellow{background:var(--yellow);color:var(--navy);}
+.ob-yellow:hover{background:#ffc233;}
+.off-note{text-align:center;margin-top:16px;font-size:11.5px;color:var(--subtle);}
+
+/* ÉTAPES */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
+.step{background:white;border:1.5px solid var(--border);border-radius:18px;padding:28px;transition:all .2s;}
+.step:hover{border-color:var(--mint);box-shadow:0 8px 24px rgba(0,200,150,.08);}
+.step-n{font-size:42px;font-weight:700;color:var(--mint);opacity:.2;line-height:1;margin-bottom:10px;letter-spacing:-2px;}
+.step h3{font-size:16px;color:var(--navy);margin-bottom:8px;}
+.step p{font-size:13.5px;line-height:1.75;}
+
+/* POUR QUI */
+.pq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px;}
+.pq{background:white;border:1.5px solid var(--border);border-radius:16px;padding:22px 24px;display:flex;gap:14px;transition:all .2s;}
+.pq:hover{border-color:var(--mint);}
+.pq-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.pq-t{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:5px;}
+.pq p{font-size:13px;line-height:1.65;}
+
+/* CHALLENGES */
+.chal-sec{background:linear-gradient(135deg,var(--navy),#0d2440);padding:80px 40px;position:relative;overflow:hidden;}
+.chal-sec::before{content:'';position:absolute;top:-100px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,200,150,.1),transparent 65%);pointer-events:none;}
+.chal-in{max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+.chal-hdr{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:44px;}
+.chal-hdr p{font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;}
+.chal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.chal-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:26px;transition:all .2s;}
+.chal-card:hover{background:rgba(255,255,255,.08);transform:translateY(-3px);}
+.chal-emoji{font-size:32px;margin-bottom:12px;display:block;}
+.chal-num{font-size:48px;font-weight:800;color:rgba(255,255,255,.08);line-height:1;margin-bottom:10px;letter-spacing:-2px;font-family:'Plus Jakarta Sans',sans-serif;}
+.chal-card h3{font-size:16px;font-weight:600;color:white;margin-bottom:7px;}
+.chal-card p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:14px;}
+.chal-reward{display:inline-flex;align-items:center;gap:6px;background:rgba(255,209,102,.12);border:1px solid rgba(255,209,102,.22);color:var(--yellow);font-size:12px;font-weight:600;padding:5px 13px;border-radius:50px;}
+
+/* MALIKA */
+.malika-sec{background:var(--bg);}
+.malika-in{display:grid;grid-template-columns:280px 1fr;gap:60px;align-items:start;}
+.malika-card{background:var(--navy);border-radius:20px;padding:28px;color:white;text-align:center;}
+.malika-av{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--blue));margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:44px;border:3px solid rgba(255,255,255,.1);}
+.malika-name{font-size:18px;font-weight:700;color:white;margin-bottom:3px;}
+.malika-role{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px;}
+.malika-facts{display:flex;flex-direction:column;gap:10px;text-align:left;}
+.mf{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:11px;padding:11px 14px;display:flex;align-items:center;gap:10px;}
+.mf-icon{font-size:18px;flex-shrink:0;}
+.mf-txt{font-size:12px;color:rgba(255,255,255,.6);line-height:1.45;}
+.mf-txt strong{color:white;font-weight:600;display:block;font-size:12.5px;}
+
+.malika-text h2{color:var(--navy);margin-bottom:5px;}
+.malika-sub{font-size:13px;color:var(--mint);font-weight:600;letter-spacing:0.3px;margin-bottom:24px;display:block;}
+.malika-text p{font-size:14.5px;color:var(--muted);line-height:1.85;margin-bottom:14px;}
+.malika-text p strong{color:var(--navy);font-weight:600;}
+.malika-quote{border-left:3px solid var(--mint);padding:4px 0 4px 18px;margin:22px 0;font-size:17px;font-style:italic;color:var(--navy);line-height:1.5;}
+
+/* PREMIUM */
+.prem-sec{background:var(--navy);padding:80px 40px;position:relative;overflow:hidden;}
+.prem-sec::before{content:'';position:absolute;top:-100px;right:-80px;width:450px;height:450px;background:radial-gradient(circle,rgba(58,134,255,.09),transparent 65%);}
+.prem-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 360px;gap:64px;align-items:start;position:relative;z-index:1;}
+.p-tag{display:inline-block;background:rgba(255,209,102,.12);border:1px solid rgba(255,209,102,.22);color:var(--yellow);font-size:11px;font-weight:700;padding:5px 14px;border-radius:50px;margin-bottom:12px;letter-spacing:0.5px;text-transform:uppercase;}
+.prem-h{font-size:clamp(24px,3vw,36px);font-weight:700;color:white;letter-spacing:-0.8px;line-height:1.2;margin-bottom:16px;}
+.prem-h em{font-style:italic;color:var(--mint);}
+.prem-p{font-size:14.5px;color:rgba(255,255,255,.48);line-height:1.8;margin-bottom:10px;}
+.prem-p strong{color:rgba(255,255,255,.8);font-weight:600;}
+.prem-items{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
+.prem-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px 18px;display:flex;gap:13px;transition:all .2s;}
+.prem-item:hover{background:rgba(255,255,255,.07);}
+.prem-item-ico{width:38px;height:38px;border-radius:11px;background:rgba(0,200,150,.12);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.prem-item h4{font-size:13.5px;font-weight:600;color:white;margin-bottom:3px;}
+.prem-item p{font-size:12.5px;color:rgba(255,255,255,.36);line-height:1.6;}
+.prem-disc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:13px 16px;margin-top:20px;font-size:12px;color:rgba(255,255,255,.28);line-height:1.7;}
+.prem-disc strong{color:rgba(255,255,255,.5);font-weight:600;}
+
+/* CHAT */
+.chat-wrap{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:20px;overflow:hidden;position:sticky;top:80px;}
+.chat-hdr{background:rgba(255,255,255,.06);padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06);}
+.chat-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--blue));display:flex;align-items:center;justify-content:center;font-size:16px;}
+.chat-nm{font-size:13px;font-weight:600;color:white;}
+.chat-online{font-size:11px;color:var(--mint);display:flex;align-items:center;gap:5px;margin-top:1px;}
+.chat-online::before{content:'';width:5px;height:5px;background:var(--mint);border-radius:50%;}
+.chat-msgs{padding:16px 18px;display:flex;flex-direction:column;gap:9px;}
+.msg{padding:10px 14px;border-radius:14px;font-size:12.5px;line-height:1.65;max-width:87%;}
+.msg-u{background:var(--mint);color:var(--navy);align-self:flex-end;border-radius:14px 14px 3px 14px;font-weight:600;}
+.msg-a{background:rgba(255,255,255,.07);color:rgba(255,255,255,.72);align-self:flex-start;border-radius:14px 14px 14px 3px;}
+.msg-a strong{color:white;font-weight:600;}
+.typing{display:flex;gap:4px;padding:10px 14px;background:rgba(255,255,255,.05);border-radius:50px;width:fit-content;}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);animation:bounce .8s infinite;}
+.dot:nth-child(2){animation-delay:.15s;}
+.dot:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
+.chat-foot{padding:12px 18px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:8px;}
+.chat-input{flex:1;background:rgba(255,255,255,.07);border:none;border-radius:50px;padding:9px 14px;color:rgba(255,255,255,.4);font-size:12.5px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
+.chat-send{width:33px;height:33px;background:var(--mint);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;}
+
+/* ANONYMAT */
+.anon-sec{background:linear-gradient(135deg,var(--mint-light),var(--blue-light));padding:72px 40px;}
+.anon-in{max-width:900px;margin:0 auto;display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:center;}
+.anon-shield{width:130px;height:130px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:58px;box-shadow:0 16px 40px rgba(0,0,0,.1);}
+.anon-text h2{font-size:28px;color:var(--navy);margin-bottom:12px;}
+.anon-text p{font-size:14.5px;margin-bottom:18px;}
+.anon-pts{display:flex;flex-direction:column;gap:9px;}
+.anon-pt{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--navy);font-weight:500;}
+.anon-pt::before{content:'✓';width:22px;height:22px;background:var(--mint);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+
+/* TEMOIGNAGES */
+.testis{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;}
+.testi{background:white;border:1.5px solid var(--border);border-radius:18px;padding:24px;transition:all .2s;}
+.testi:hover{border-color:var(--mint);transform:translateY(-3px);}
+.testi-gain{font-size:26px;font-weight:700;color:var(--mint);letter-spacing:-0.8px;margin-bottom:10px;}
+.testi-q{font-size:13.5px;color:var(--muted);line-height:1.75;font-style:italic;margin-bottom:16px;}
+.testi-who{font-size:13px;color:var(--navy);font-weight:600;}
+.testi-role{font-size:12px;color:var(--subtle);margin-top:2px;}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:10px;margin-top:44px;}
+.faq-item{background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;}
+.faq-q{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .15s;gap:16px;}
+.faq-q:hover{background:var(--bg);}
+.faq-q h4{font-size:14.5px;font-weight:600;color:var(--navy);}
+.faq-ico{width:26px;height:26px;background:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--navy);flex-shrink:0;transition:all .2s;}
+.faq-item.open .faq-ico{background:var(--mint);color:white;transform:rotate(45deg);}
+.faq-a{display:none;padding:0 22px 18px;font-size:14px;color:var(--muted);line-height:1.75;}
+.faq-item.open .faq-a{display:block;}
+
+/* CTA */
+.cta-sec{background:linear-gradient(135deg,var(--navy),#0d2440);padding:90px 40px;text-align:center;position:relative;overflow:hidden;}
+.cta-sec::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:700px;height:350px;background:radial-gradient(ellipse,rgba(0,200,150,.1),transparent 65%);}
+.cta-sec h2{color:white;margin-bottom:14px;position:relative;}
+.cta-sec h2 em{font-style:italic;color:var(--mint);}
+.cta-sec p{font-size:15px;color:rgba(255,255,255,.45);margin-bottom:32px;position:relative;}
+.cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;position:relative;}
+
+/* NOTICE + FOOTER */
+.notice{background:#fffbec;border-top:2px solid var(--yellow);border-bottom:2px solid var(--yellow);padding:20px 40px;}
+.notice-in{max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;gap:14px;}
+.notice-icon{width:32px;height:32px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--navy);flex-shrink:0;margin-top:1px;}
+.notice p{font-size:13px;color:#78450a;line-height:1.75;}
+.notice p strong{font-weight:700;color:#5c3408;}
+footer{background:var(--navy);padding:24px 40px;}
+.foot-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.f-logo{font-size:16px;font-weight:700;color:rgba(255,255,255,.4);}
+.f-logo em{font-style:normal;color:var(--mint);}
+.f-copy{font-size:12px;color:rgba(255,255,255,.2);}
+.f-links{display:flex;gap:16px;}
+.f-links a{font-size:12px;color:rgba(255,255,255,.22);text-decoration:none;cursor:pointer;transition:color .15s;}
+.f-links a:hover{color:rgba(255,255,255,.6);}
+
+.faq-item.faq-first{border-color:var(--mint);}
+.faq-item.faq-first .faq-q h4{color:var(--mint);font-size:15.5px;}
+
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.stat-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:28px;transition:all .2s;}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.07);}
+.stat-card-navy{background:var(--navy);border-color:var(--navy);}
+.stat-card-mint{background:var(--mint-light);border-color:var(--mint);}
+.stat-card-peach{background:var(--peach-light);border-color:var(--peach);}
+.stat-val{font-size:36px;font-weight:800;color:var(--navy);letter-spacing:-1.5px;line-height:1;margin-bottom:10px;}
+.stat-card-navy .stat-val{color:var(--mint);}
+.stat-card-mint .stat-val{color:var(--mint);}
+.stat-card-peach .stat-val{color:var(--peach);}
+.stat-label{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:12px;}
+.stat-card-navy .stat-label{color:rgba(255,255,255,.55);}
+.stat-source{font-size:11px;color:var(--subtle);font-style:italic;}
+.stat-card-navy .stat-source{color:rgba(255,255,255,.25);}
+
+/* SIMULATOR */
+.sim-wrap{background:white;border:1.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.06);}
+.sim-tabs{display:flex;background:var(--navy);padding:0 24px;}
+.sim-tab{display:flex;align-items:center;gap:8px;padding:14px 20px 14px 0;color:rgba(255,255,255,.35);font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-right:8px;}
+.sim-tab.active{color:var(--mint);border-bottom-color:var(--mint);}
+.sim-tab.done{color:rgba(255,255,255,.55);}
+.sim-tab-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.sim-tab.active .sim-tab-num{background:var(--mint);color:var(--navy);}
+.sim-tab.done .sim-tab-num{background:rgba(0,200,150,.3);color:var(--mint);}
+.sim-panel{display:none;padding:28px;}
+.sim-panel.active{display:block;}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:4px;}
+.sim-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.sim-card{background:var(--bg);border-radius:14px;padding:22px;}
+.sim-card-full{grid-column:1/-1;}
+.sim-card-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.sim-field{margin-bottom:14px;}
+.sim-field:last-child{margin-bottom:0;}
+.sim-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:5px;}
+.sim-field input,.sim-field select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);background:white;outline:none;transition:border-color .15s;}
+.sim-field input:focus,.sim-field select:focus{border-color:var(--mint);}
+.sim-hint{font-size:11px;color:var(--subtle);margin-top:4px;}
+.sim-btn-row{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;}
+.sim-btn{padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
+.sim-btn-mint{background:var(--mint);color:var(--navy);}
+.sim-btn-mint:hover{background:#00dba5;}
+.sim-btn-navy{background:var(--navy);color:white;}
+.sim-btn-navy:hover{background:var(--navy2);}
+.sim-btn-outline{background:white;border:1.5px solid var(--border);color:var(--navy);}
+.sim-btn-outline:hover{border-color:var(--navy);}
+.sim-result-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:16px;padding:28px 32px;color:white;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:20px;}
+.sim-result-hero h3{font-size:20px;font-weight:700;color:white;margin-bottom:4px;}
+.sim-result-hero p{font-size:13px;color:rgba(255,255,255,.45);}
+.sim-result-val{text-align:right;}
+.sim-gain{font-size:42px;font-weight:700;color:var(--mint);letter-spacing:-1.5px;line-height:1;}
+.sim-gain-lbl{font-size:12px;color:rgba(255,255,255,.35);margin-top:3px;}
+.sim-gain-note{font-size:11px;color:rgba(255,255,255,.22);margin-top:3px;}
+.sim-section-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sim-aides-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
+.sim-aide{background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--border);display:flex;gap:12px;}
+.sim-aide.elig{border-left-color:var(--mint);border-left-width:3px;}
+.sim-aide.not-elig{opacity:.45;}
+.sim-aide-ico{width:38px;height:38px;border-radius:10px;background:white;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sim-aide-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.sim-aide-val{font-size:13px;font-weight:700;color:var(--mint);margin-bottom:3px;}
+.sim-aide-not{color:var(--subtle);}
+.sim-aide-desc{font-size:11.5px;color:var(--muted);line-height:1.5;}
+.sim-aide-link{font-size:11px;color:var(--blue);text-decoration:none;display:inline-block;margin-top:4px;font-weight:500;}
+.sim-eco{background:var(--bg);border-radius:12px;padding:16px 18px;border:1.5px solid var(--border);display:flex;align-items:center;gap:16px;margin-bottom:10px;}
+.sim-eco.alert{border-left:3px solid var(--peach);}
+.sim-eco.warning{border-left:3px solid var(--yellow);}
+.sim-eco.ok{opacity:.6;}
+.sim-eco-ico{font-size:22px;min-width:32px;text-align:center;}
+.sim-eco-body{flex:1;}
+.sim-eco-body h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.sim-eco-body p{font-size:12px;color:var(--muted);line-height:1.5;}
+.sim-eco-action{font-size:11px;color:var(--blue);font-weight:600;margin-top:4px;}
+.sim-eco-val{text-align:right;min-width:80px;font-size:18px;font-weight:700;color:var(--peach);}
+.sim-eco-val.ok{color:var(--mint);font-size:14px;}
+.sim-total-banner{background:var(--navy);border-radius:14px;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;margin-top:24px;gap:20px;}
+.sim-total-label{font-size:15px;font-weight:700;color:white;margin-bottom:3px;}
+.sim-total-sub{font-size:12px;color:rgba(255,255,255,.35);}
+.sim-total-nums{display:flex;gap:32px;align-items:center;}
+.sim-total-val{font-size:26px;font-weight:700;color:var(--mint);letter-spacing:-0.5px;line-height:1;}
+.sim-total-big{font-size:34px;color:var(--yellow);}
+.sim-total-lbl{font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;}
+.sim-lettre{background:var(--bg);border-radius:12px;border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;}
+.sim-lettre-hdr{padding:16px 20px;display:flex;justify-content:space-between;cursor:pointer;background:white;}
+.sim-lettre-hdr h4{font-size:14px;font-weight:700;color:var(--navy);}
+.sim-lettre-body{display:none;padding:0 20px 20px;}
+.sim-lettre-body.open{display:block;}
+.sim-lettre-txt{background:white;border:1px solid var(--border);border-radius:9px;padding:16px;font-family:'Courier New',monospace;font-size:12px;line-height:1.8;color:#334;white-space:pre-wrap;margin-bottom:10px;}
+.sim-copy{background:var(--navy);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;overflow-y:auto;padding:44px 20px;}
+.modal-box{background:white;max-width:620px;margin:0 auto;border-radius:18px;padding:40px;position:relative;}
+.modal-close{position:absolute;top:16px;right:16px;width:30px;height:30px;background:var(--bg);border:none;border-radius:50%;font-size:15px;cursor:pointer;}
+.modal-box h2{font-size:24px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.modal-date{font-size:11px;color:var(--subtle);margin-bottom:22px;display:block;}
+.modal-box h3{font-size:14px;font-weight:700;color:var(--navy);margin:16px 0 6px;}
+.modal-box p{font-size:13.5px;color:var(--muted);line-height:1.75;}
+
+@media(max-width:900px){
+  .hero-in,.offres-grid,.steps,.malika-in,.prem-in,.testis,.pq-grid,.chal-grid,.anon-in,.offres-intro,.chal-hdr{grid-template-columns:1fr;}
+  .hero-card,.hero-visual{display:none;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  nav,.sec,.hero,.chal-sec,.prem-sec,.cta-sec,.notice,footer,.trust,.anon-sec{padding-left:20px;padding-right:20px;}
+  .hero{min-height:auto;padding-bottom:60px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="#">
+      <div class="logo-mark">💡</div>
+      <div class="logo-name">Axio<em>Droit</em></div>
+    </a>
+    <div class="nav-links">
+      <a href="#simulateur">Simulateur</a>
+      <a href="#chiffres">Chiffres clés</a>
+      <a href="#offres">Nos offres</a>
+      <a href="#malika">Qui suis-je</a>
+      <a href="#challenges">Récompenses</a>
+      <a href="#faq">FAQ</a>
+      <a href="#simulateur" class="nav-cta">Commencer gratuitement →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-in">
+    <div>
+      <div class="hero-pill anim"><span></span>Votre assistant budget et droits</div>
+      <h1 class="anim d1">Reprenez le contrôle<br>de <span class="g">votre argent.</span></h1>
+      <p class="hero-desc anim d2">AxioDroit détecte les aides auxquelles vous avez droit, vous aide à mieux gérer votre budget, trouve les économies possibles et vous donne la possibilité d'être accompagné par un assistant personnel pour vos démarches administratives.</p>
+      <div class="hero-btns anim d3">
+        <a href="#simulateur" class="btn btn-mint">Simuler mes droits gratuitement</a>
+        <a href="#offres" class="btn btn-ghost">Voir les offres</a>
+      </div>
+      <div class="hero-stats anim d4">
+        <div class="hst"><div class="hst-v"><em>+40</em></div><div class="hst-l">aides passées en revue</div></div>
+        <div class="hst"><div class="hst-v">3 200 <em>€</em></div><div class="hst-l">récupérés par an en moyenne</div></div>
+        <div class="hst"><div class="hst-v"><em>100%</em></div><div class="hst-l">confidentiel</div></div>
+      </div>
+    </div>
+    <div style="animation:float 4s ease-in-out infinite;">
+      <div class="hero-card">
+        <div class="hc-header">
+          <div class="hc-brand">Axio<em>Droit</em></div>
+          <div class="hc-status">Analyse en cours</div>
+        </div>
+        <div class="hc-highlight">
+          <div class="hc-hl-info"><strong>4 opportunités trouvées</strong><span>Voici ce qu'on peut optimiser</span></div>
+          <div class="hc-hl-val">99 €/mois</div>
+        </div>
+        <div class="hc-rows">
+          <div class="hc-row"><span class="hc-row-name">Forfait mobile surchargé</span><span class="hc-row-val red">- 25 €</span></div>
+          <div class="hc-row"><span class="hc-row-name">Doublon assurance tél.</span><span class="hc-row-val red">- 10 €</span></div>
+          <div class="hc-row"><span class="hc-row-name">Mutuelle gratuite (CSS)</span><span class="hc-row-val green">- 55 €</span></div>
+          <div class="hc-row"><span class="hc-row-name">Énergie optimisable</span><span class="hc-row-val green">- 9 €</span></div>
+        </div>
+        <div class="hc-total">
+          <div><div class="hct-l">Économie mensuelle estimée</div><div class="hct-note">Estimation indicative</div></div>
+          <div class="hct-v">99 €</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="trust-in">
+    <div class="ti"><div class="ti-dot"></div>Simulation gratuite, sans carte bancaire</div>
+    <div class="ti"><div class="ti-dot"></div>Données privées, jamais revendues</div>
+    <div class="ti"><div class="ti-dot"></div>Basé sur les données officielles</div>
+    <div class="ti"><div class="ti-dot"></div>Assistance personnelle en offre Premium</div>
+    <div class="ti"><div class="ti-dot"></div>Résultat en 2 minutes</div>
+  </div>
+</div>
+
+<!-- CHIFFRES CLÉS -->
+<section class="sec sec-alt" id="chiffres">
+  <div class="sec-in">
+    <span class="tag tag-mint">Chiffres officiels</span>
+    <h2>Des milliards d'euros non réclamés chaque année</h2>
+    <p style="max-width:560px;margin:10px 0 44px;font-size:15px;">Des millions de Français passent à côté d'aides qui leur appartiennent. Ces chiffres sont issus de sources officielles.</p>
+    <div class="stats-grid">
+      <div class="stat-card stat-card-navy">
+        <div class="stat-val">10 milliards €</div>
+        <div class="stat-label">d'aides sociales non réclamées chaque année en France</div>
+        <div class="stat-source">Source : Secours Catholique / CAF</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">30%</div>
+        <div class="stat-label">des personnes éligibles au RSA ne le demandent pas</div>
+        <div class="stat-source">Source : DREES, 2022</div>
+      </div>
+      <div class="stat-card stat-card-mint">
+        <div class="stat-val">3 millions</div>
+        <div class="stat-label">de foyers éligibles à la mutuelle gratuite (CSS) ne l'ont pas demandée</div>
+        <div class="stat-source">Source : Assurance Maladie</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">68%</div>
+        <div class="stat-label">des Français ne savent pas à quelles aides ils ont droit</div>
+        <div class="stat-source">Source : Sondage Ipsos, 2023</div>
+      </div>
+      <div class="stat-card stat-card-peach">
+        <div class="stat-val">1 foyer sur 3</div>
+        <div class="stat-label">paie une assurance en doublon sans le savoir</div>
+        <div class="stat-source">Source : UFC-Que Choisir</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">220 €</div>
+        <div class="stat-label">d'économies mensuelles potentielles en moyenne sur les charges fixes</div>
+        <div class="stat-source">Source : CLCV, association de consommateurs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFRES -->
+<section class="sec" id="offres">
+  <div class="sec-in">
+    <span class="tag tag-mint">Nos offres</span>
+    <h2>Trois niveaux d'accompagnement</h2>
+    <div class="offres-intro">
+      <p>Commencez gratuitement, sans compte à créer, pour découvrir à quelles aides vous avez droit. Si vous souhaitez aller plus loin, l'offre Essentielle analyse l'ensemble de vos charges et identifie concrètement où vous perdez de l'argent chaque mois.</p>
+      <p>Le tarif affiché est garanti pour toute la durée de votre abonnement. Si nos prix évoluent, les abonnés actuels conservent leur tarif. Résiliation à tout moment, en un clic, sans frais.</p>
+    </div>
+    <div class="offres-grid">
+      <!-- DÉCOUVERTE -->
+      <div class="offre">
+        <span class="off-label">Offre 1 — Découverte</span>
+        <div class="off-icon ico-free">🔍</div>
+        <div class="off-name">Gratuit</div>
+        <div class="off-price">0 €</div>
+        <div class="off-freq">Sans inscription obligatoire</div>
+        <div class="off-sep"></div>
+        <div class="off-desc">Découvrez en quelques minutes les aides auxquelles vous avez droit, sans rien installer ni fournir.</div>
+        <ul class="off-list">
+          <li><span class="ck ck-y">✓</span>Simulation complète de vos droits sociaux</li>
+          <li><span class="ck ck-y">✓</span>Plus de 40 aides analysées selon votre profil</li>
+          <li><span class="ck ck-y">✓</span>Montants estimés et personnalisés</li>
+          <li><span class="ck ck-y">✓</span>Liens vers les démarches officielles</li>
+          <li class="no"><span class="ck ck-n">—</span>Audit de vos charges mensuelles</li>
+          <li class="no"><span class="ck ck-n">—</span>Lettres types prêtes à envoyer</li>
+          <li class="no"><span class="ck ck-n">—</span>Assistant personnel dédié</li>
+        </ul>
+        <a href="#simulateur" class="off-btn ob-border">Simuler mes droits</a>
+      </div>
+      <!-- ESSENTIELLE -->
+      <div class="offre star">
+        <div class="badge-top badge-star">La plus choisie</div>
+        <span class="off-label">Offre 2 — Essentielle</span>
+        <div class="off-icon ico-ess">💡</div>
+        <div class="off-name">Essentielle</div>
+        <div class="off-price">9,90 €</div>
+        <div class="off-freq">par mois, sans engagement</div>
+        <div class="off-sep"></div>
+        <div class="off-desc">L'audit complet de vos charges, des lettres types et des liens directs pour agir immédiatement.</div>
+        <ul class="off-list">
+          <li><span class="ck ck-y">✓</span>Tout ce qu'inclut la version gratuite</li>
+          <li><span class="ck ck-y">✓</span>Audit budget en 9 étapes détaillées</li>
+          <li><span class="ck ck-y">✓</span>Détection des doublons et gaspillages</li>
+          <li><span class="ck ck-y">✓</span>Lettres types personnalisées prêtes à envoyer</li>
+          <li><span class="ck ck-y">✓</span>Liens vers les meilleures offres du marché</li>
+          <li><span class="ck ck-y">✓</span>Rapport complet de vos économies potentielles</li>
+          <li class="no"><span class="ck ck-n">—</span>Assistant personnel dédié</li>
+        </ul>
+        <a href="https://buy.stripe.com/bJedR15dh8xN5sm2UqgrS01" target="_blank" class="off-btn ob-mint">Souscrire à l'offre Essentielle</a>
+      </div>
+      <!-- PREMIUM -->
+      <div class="offre gold">
+        <div class="badge-top badge-gold">Assistant personnel</div>
+        <span class="off-label">Offre 3 — Premium</span>
+        <div class="off-icon ico-prem">👩‍💼</div>
+        <div class="off-name">Premium</div>
+        <div class="off-price">19,90 €</div>
+        <div class="off-freq">par mois, sans engagement</div>
+        <div class="off-sep"></div>
+        <div class="off-desc">Tout l'Essentiel, plus un assistant personnel à votre écoute — une vraie personne, pas un robot.</div>
+        <ul class="off-list">
+          <li><span class="ck ck-y">✓</span>Tout ce qu'inclut l'offre Essentielle</li>
+          <li><span class="ck ck-y">✓</span>Un assistant personnel à votre écoute</li>
+          <li><span class="ck ck-y">✓</span>Aide à comprendre vos courriers administratifs</li>
+          <li><span class="ck ck-y">✓</span>Accompagnement dans vos démarches du quotidien</li>
+          <li><span class="ck ck-y">✓</span>Vous posez vos questions, on vous répond simplement</li>
+          <li><span class="ck ck-y">✓</span>Tableau de bord mensuel automatique</li>
+          <li><span class="ck ck-y">✓</span>Disponible 5 jours sur 7 par messagerie</li>
+        </ul>
+        <a href="https://buy.stripe.com/4gMaEP7lp8xNdYSbqWgrS00" target="_blank" class="off-btn ob-yellow">Accéder au Premium</a>
+      </div>
+    </div>
+    <p class="off-note">Sans engagement · Résiliation en un clic · Données 100% confidentielles · Montants affichés à titre indicatif</p>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="sec sec-alt" id="comment">
+  <div class="sec-in">
+    <span class="tag tag-blue">Comment ça marche</span>
+    <h2>Simple comme un message à un ami</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><h3>Vous renseignez votre profil</h3><p>Situation familiale, revenus, logement, charges. Cela prend deux minutes. Aucun justificatif à fournir, aucun compte obligatoire pour commencer.</p></div>
+      <div class="step"><div class="step-n">02</div><h3>On analyse votre situation</h3><p>Notre outil passe en revue plus de 40 aides sociales et l'ensemble de vos charges pour détecter chaque euro récupérable chaque mois.</p></div>
+      <div class="step"><div class="step-n">03</div><h3>Vous avancez à votre rythme</h3><p>Lettres types prêtes, liens directs, tableau de bord mensuel. Et si vous êtes en Premium, votre assistante est là quand vous en avez besoin.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- POUR QUI -->
+<section class="sec">
+  <div class="sec-in">
+    <span class="tag tag-peach">Pour qui</span>
+    <h2>AxioDroit est fait pour vous si...</h2>
+    <div class="pq-grid">
+      <div class="pq"><div class="pq-ico" style="background:var(--blue-light);">💼</div><div><div class="pq-t">Vous êtes salarié à revenus modestes</div><p>Prime d'activité, ALS, CSS, chèque énergie... Vous avez probablement des droits que vous n'avez pas encore réclamés.</p></div></div>
+      <div class="pq"><div class="pq-ico" style="background:var(--peach-light);">👨‍👩‍👧</div><div><div class="pq-t">Vous êtes parent avec des enfants à charge</div><p>Complément de mode de garde, allocations familiales, crédit d'impôt... Des centaines d'euros potentiels chaque mois.</p></div></div>
+      <div class="pq"><div class="pq-ico" style="background:var(--mint-light);">💻</div><div><div class="pq-t">Vous êtes auto-entrepreneur</div><p>Revenus variables et droits complexes. On fait le point ensemble et on optimise vos charges fixes mois après mois.</p></div></div>
+      <div class="pq"><div class="pq-ico" style="background:var(--yellow-light);">📊</div><div><div class="pq-t">Vous avez trop de charges fixes</div><p>Notre audit révèle en moyenne entre 80 et 150 euros d'économies mensuelles que vous n'aviez pas identifiées.</p></div></div>
+      <div class="pq"><div class="pq-ico" style="background:#f0f4ff;">📬</div><div><div class="pq-t">Les démarches administratives vous pèsent</div><p>Vous sollicitez votre assistante quand vous en avez besoin. Elle répond à vos questions et vous accompagne à votre rythme.</p></div></div>
+      <div class="pq"><div class="pq-ico" style="background:#fef2f2;">🎯</div><div><div class="pq-t">Vous voulez mieux piloter votre budget</div><p>Votre tableau de bord suit vos dépenses automatiquement. Plus de tableur à remplir chaque mois.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATEUR DROITS INTÉGRÉ -->
+<section class="sec" id="simulateur">
+  <div class="sec-in">
+    <span class="tag tag-mint">Gratuit — Sans inscription</span>
+    <h2>Simulez vos droits maintenant</h2>
+    <p style="max-width:560px;margin:10px 0 32px;font-size:15px;">Répondez à quelques questions et découvrez en 2 minutes les aides auxquelles vous avez droit. Sans carte bancaire, sans compte à créer.</p>
+    <div class="sim-wrap">
+      <!-- NAV ÉTAPES -->
+      <div class="sim-tabs">
+        <div class="sim-tab active" id="stab1" onclick="sGoTo(1)"><span class="sim-tab-num">1</span>Votre profil</div>
+        <div class="sim-tab" id="stab2" onclick="sGoTo(2)"><span class="sim-tab-num">2</span>Vos charges</div>
+        <div class="sim-tab" id="stab3" onclick="sGoTo(3)"><span class="sim-tab-num">3</span>Résultats</div>
+        <div class="sim-tab" id="stab4" onclick="sGoTo(4)"><span class="sim-tab-num">4</span>Lettres types</div>
+      </div>
+      <!-- PANEL 1 -->
+      <div class="sim-panel active" id="spanel1">
+        <div class="sim-grid">
+          <div class="sim-card"><div class="sim-card-title">Identité</div>
+            <div class="sim-field"><label>Prénom</label><input type="text" id="s_prenom" value=""></div>
+            <div class="sim-field"><label>Âge</label><input type="number" id="s_age" value="35" min="16" max="100"></div>
+            <div class="sim-field"><label>Situation familiale</label><select id="s_situation"><option>Célibataire</option><option>En couple</option><option>Marié(e)</option><option>Divorcé(e)</option><option>Veuf(ve)</option></select></div>
+            <div class="sim-field"><label>Enfants à charge (moins de 20 ans)</label><input type="number" id="s_enfants" value="0" min="0" max="15"></div>
+          </div>
+          <div class="sim-card"><div class="sim-card-title">Situation professionnelle</div>
+            <div class="sim-field"><label>Statut</label><select id="s_statut"><option>Salarié(e)</option><option>Sans emploi</option><option>Auto-entrepreneur</option><option>Retraité(e)</option><option>Étudiant(e)</option></select></div>
+            <div class="sim-field"><label>Revenu mensuel net (€)</label><input type="number" id="s_revenu" value="1400" min="0"></div>
+            <div class="sim-field"><label>Revenu conjoint (€)</label><input type="number" id="s_revConj" value="0" min="0"><div class="sim-hint">Laisser 0 si célibataire</div></div>
+          </div>
+          <div class="sim-card"><div class="sim-card-title">Logement</div>
+            <div class="sim-field"><label>Statut</label><select id="s_logement"><option>Locataire</option><option>Propriétaire</option><option>Hébergé</option></select></div>
+            <div class="sim-field"><label>Loyer mensuel (€)</label><input type="number" id="s_loyer" value="700" min="0"></div>
+            <div class="sim-field"><label>Type de logement</label><select id="s_typeLog"><option>Privé non conventionné</option><option>HLM</option><option>Privé conventionné APL</option></select></div>
+            <div class="sim-field"><label>Zone géographique</label><select id="s_zone"><option>Zone 2 (grandes villes)</option><option>Zone 1 (Paris / IDF)</option><option>Zone 3 (autres communes)</option></select></div>
+          </div>
+          <div class="sim-card"><div class="sim-card-title">Santé et Handicap</div>
+            <div class="sim-field"><label>Handicap reconnu MDPH ?</label><select id="s_handicap"><option>Non</option><option>Oui</option></select></div>
+            <div class="sim-field"><label>Taux d'incapacité (%)</label><input type="number" id="s_taux" value="0" min="0" max="100"></div>
+            <div class="sim-field"><label>Maladie longue durée (ALD) ?</label><select id="s_ald"><option>Non</option><option>Oui</option></select></div>
+            <div class="sim-field"><label>Bénéficiaire CSS (mutuelle gratuite) ?</label><select id="s_css"><option>Non</option><option>Oui</option></select></div>
+          </div>
+        </div>
+        <div class="sim-btn-row"><button class="sim-btn sim-btn-mint" onclick="sGoTo(2)">Continuer →</button></div>
+      </div>
+      <!-- PANEL 2 -->
+      <div class="sim-panel" id="spanel2">
+        <div class="sim-grid">
+          <div class="sim-card"><div class="sim-card-title">Télécom et loisirs</div>
+            <div class="sim-field"><label>Forfait téléphone (€/mois)</label><input type="number" id="s_tel" value="35" min="0"></div>
+            <div class="sim-field"><label>Internet / box (€/mois)</label><input type="number" id="s_internet" value="40" min="0"></div>
+            <div class="sim-field"><label>Streaming (€/mois)</label><input type="number" id="s_streaming" value="20" min="0"><div class="sim-hint">Netflix, Spotify, Disney+…</div></div>
+          </div>
+          <div class="sim-card"><div class="sim-card-title">Assurances</div>
+            <div class="sim-field"><label>Assurance habitation (€/mois)</label><input type="number" id="s_assurHab" value="25" min="0"></div>
+            <div class="sim-field"><label>Assurance téléphone opérateur (€/mois)</label><input type="number" id="s_assurTel" value="10" min="0"></div>
+            <div class="sim-field"><label>Assurance carte bancaire (€/mois)</label><input type="number" id="s_assurCB" value="8" min="0"></div>
+            <div class="sim-field"><label>Mutuelle santé (€/mois)</label><input type="number" id="s_mutuelle" value="60" min="0"></div>
+          </div>
+          <div class="sim-card sim-card-full"><div class="sim-card-title">Énergie et autres charges</div>
+            <div class="sim-grid2">
+              <div class="sim-field"><label>Électricité / Gaz (€/mois)</label><input type="number" id="s_energie" value="90" min="0"></div>
+              <div class="sim-field"><label>Autres charges fixes (€/mois)</label><input type="number" id="s_autres" value="50" min="0"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sim-btn-row">
+          <button class="sim-btn sim-btn-outline" onclick="sGoTo(1)">← Retour</button>
+          <button class="sim-btn sim-btn-navy" onclick="sAnalyser()">Analyser mes droits →</button>
+        </div>
+      </div>
+      <!-- PANEL 3 -->
+      <div class="sim-panel" id="spanel3">
+        <div class="sim-result-hero">
+          <div><h3 id="s_resTitre">Votre rapport</h3><p id="s_resSub"></p></div>
+          <div class="sim-result-val"><div class="sim-gain" id="s_gainTotal">—</div><div class="sim-gain-lbl">aides estimées / mois</div><div class="sim-gain-note" id="s_gainAn"></div></div>
+        </div>
+        <div class="sim-section-title">Aides détectées</div>
+        <div id="s_aidesContainer" class="sim-aides-grid"></div>
+        <div class="sim-section-title" style="margin-top:28px;">Optimisation de vos charges</div>
+        <div id="s_budgetContainer"></div>
+        <div class="sim-total-banner">
+          <div><div class="sim-total-label">Total récupérable estimé</div><div class="sim-total-sub">Aides sociales + économies sur charges</div></div>
+          <div class="sim-total-nums">
+            <div><div class="sim-total-val" id="s_totAides">—</div><div class="sim-total-lbl">Aides/mois</div></div>
+            <div><div class="sim-total-val" id="s_totEco">—</div><div class="sim-total-lbl">Économies/mois</div></div>
+            <div><div class="sim-total-val sim-total-big" id="s_totAn">—</div><div class="sim-total-lbl">Total/an</div></div>
+          </div>
+        </div>
+        <div class="sim-btn-row">
+          <button class="sim-btn sim-btn-outline" onclick="sGoTo(2)">← Modifier</button>
+          <button class="sim-btn sim-btn-mint" onclick="sGoTo(4)">Voir les lettres types →</button>
+        </div>
+      </div>
+      <!-- PANEL 4 -->
+      <div class="sim-panel" id="spanel4">
+        <div class="sim-section-title">Lettres types personnalisées</div>
+        <p style="color:var(--muted);margin-bottom:20px;font-size:13.5px;">Cliquez sur une lettre pour la dérouler, puis copiez-la directement.</p>
+        <div id="s_lettresContainer"></div>
+        <div class="sim-btn-row"><button class="sim-btn sim-btn-outline" onclick="sGoTo(3)">← Résultats</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHALLENGES -->
+<section class="chal-sec" id="challenges">
+  <div class="chal-in">
+    <div class="chal-hdr">
+      <div>
+        <span class="tag tag-yellow">Programme Récompenses</span>
+        <h2 style="color:white;margin-top:8px;">Plus vous économisez,<br>plus on vous récompense.</h2>
+      </div>
+      <p>Parce que chaque effort mérite d'être reconnu. Plus vous avancez avec AxioDroit, plus les avantages s'accumulent.</p>
+    </div>
+    <div class="chal-grid">
+      <div class="chal-card">
+        <div class="chal-num">01</div>
+        <h3>Parrainez un proche</h3>
+        <p>Invitez quelqu'un à rejoindre AxioDroit. Dès qu'il s'abonne, vous recevez tous les deux un mois offert. Simple, immédiat.</p>
+        <div class="chal-reward">1 mois offert chacun</div>
+      </div>
+      <div class="chal-card">
+        <div class="chal-num">02</div>
+        <h3>3 mois d'abonnement</h3>
+        <p>Vous êtes abonné depuis 3 mois ? Votre mois suivant est offert. Et si vous êtes en Essentiel, vous pouvez découvrir le Premium gratuitement pendant ce mois offert.</p>
+        <div class="chal-reward">1 mois offert + accès Premium découverte</div>
+      </div>
+      <div class="chal-card">
+        <div class="chal-num">03</div>
+        <h3>Challenge personnel</h3>
+        <p>Vous définissez avec votre assistante un objectif d'économies réaliste. Objectif atteint ? On décide ensemble de la récompense.</p>
+        <div class="chal-reward">Récompense définie ensemble</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MALIKA -->
+<section class="sec malika-sec" id="malika">
+  <div class="sec-in">
+    <div class="malika-in">
+      <div>
+        <div class="malika-card">
+          <div class="malika-av">👩‍💼</div>
+          <div class="malika-name">Malika</div>
+          <div class="malika-role">Fondatrice d'AxioDroit</div>
+          <div class="malika-facts">
+            <div class="mf"><div class="mf-icon">🏛️</div><div class="mf-txt"><strong>15 ans à la CAF</strong>Des milliers de personnes accompagnées</div></div>
+            <div class="mf"><div class="mf-icon">✨</div><div class="mf-txt"><strong>3 ans en conciergerie de luxe</strong>Des centaines de clients accompagnés dans leurs voyages, réservations et quotidien</div></div>
+            <div class="mf"><div class="mf-icon">🔒</div><div class="mf-txt"><strong>Anonymat garanti</strong>Votre situation, pas votre identité</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="malika-text">
+        <span class="tag tag-mint">Mon histoire</span>
+        <h2 style="margin-top:10px;">Pourquoi j'ai créé AxioDroit</h2>
+        <span class="malika-sub">Fondatrice — Malika</span>
+        <p>Pendant près de quinze ans, j'ai travaillé à la Caisse d'Allocations Familiales. En quinze ans, j'ai aidé des dizaines de milliers de personnes à démêler des dossiers complexes, à comprendre des courriers que personne ne leur avait expliqués, à récupérer des aides qu'elles n'avaient pas réclamées. J'ai compris une chose très tôt : <strong>la plupart des gens ne passent pas à côté de leurs droits par négligence, mais simplement parce qu'ils ne savent pas où chercher ni à qui demander.</strong></p>
+        <p>Ensuite, j'ai travaillé trois ans dans une conciergerie de luxe. J'y ai découvert quelque chose que je trouvais formidable : avoir quelqu'un de confiance à qui écrire pour n'importe quelle démarche. Un interlocuteur humain, disponible, qui connaît votre situation et vous répond vraiment. Ce type d'accompagnement existait pour une poignée de personnes qui pouvaient se l'offrir. Je voulais le rendre accessible à tout le monde.</p>
+        <p>C'est exactement ce qu'est AxioDroit. Un outil sérieux qui analyse vos droits et vos charges, et derrière lui, une vraie personne disponible quand vous en avez besoin. <strong>Pas un chatbot. Quelqu'un qui connaît le système de l'intérieur et qui est là pour vous.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREMIUM -->
+<section class="prem-sec">
+  <div class="prem-in">
+    <div>
+      <span class="p-tag">Premium — 19,90 €/mois</span>
+      <h2 class="prem-h">Un assistant personnel<br><em>à votre service</em></h2>
+      <p class="prem-p">Avec le Premium, vous avez accès à une vraie personne que vous contactez <strong>quand vous en avez besoin</strong>. Votre tableau de bord analyse vos finances chaque mois automatiquement. Si vous avez une question ou une démarche à faire, vous envoyez un message et votre assistante vous répond.</p>
+      <p class="prem-p">AxioDroit n'est pas un cabinet juridique ni comptable. <strong>Ce que nous faisons, c'est vous expliquer simplement, vous orienter concrètement et vous accompagner dans vos démarches du quotidien.</strong></p>
+      <div class="prem-items">
+        <div class="prem-item"><div class="prem-item-ico">💬</div><div><h4>Vos questions trouvent des réponses claires</h4><p>Un courrier administratif que vous ne comprenez pas, une aide à vérifier, une démarche à faire — on vous répond simplement, sans jargon.</p></div></div>
+        <div class="prem-item"><div class="prem-item-ico">📋</div><div><h4>On vous accompagne dans vos démarches</h4><p>Pour les démarches qui ne nécessitent pas vos identifiants personnels, on peut agir directement. Sinon, on vous explique étape par étape.</p></div></div>
+        <div class="prem-item"><div class="prem-item-ico">📊</div><div><h4>Votre tableau de bord s'occupe de tout chaque mois</h4><p>Vos dépenses sont analysées automatiquement. Si quelque chose mérite votre attention, vous en êtes alerté. Vous restez aux commandes.</p></div></div>
+        <div class="prem-item"><div class="prem-item-ico">🔒</div><div><h4>Vos informations restent strictement confidentielles</h4><p>Vos informations ne sont jamais transmises à des tiers. Nous avons besoin de votre situation, pas de votre identité.</p></div></div>
+      </div>
+      <div class="prem-disc"><strong>Important :</strong> AxioDroit est un service d'assistance personnelle, pas un cabinet réglementé. Pour les situations qui dépassent nos compétences, nous vous orientons vers les bons professionnels sans vous laisser sans réponse.</div>
+    </div>
+    <div class="chat-wrap">
+      <div class="chat-hdr">
+        <div class="chat-av">👩</div>
+        <div><div class="chat-nm">Malika — AxioDroit</div><div class="chat-online">En ligne maintenant</div></div>
+      </div>
+      <div class="chat-msgs">
+        <div class="msg msg-u">Bonjour, j'ai reçu un courrier de la CAF que je ne comprends pas</div>
+        <div class="msg msg-a"><strong>Bonjour !</strong> Dites-moi ce qu'il contient. Je vous explique ce que ça signifie et ce qu'il faut faire.</div>
+        <div class="msg msg-u">Il parle d'une révision de mes APL à partir du 1er du mois prochain</div>
+        <div class="msg msg-a">C'est une révision annuelle automatique. Ça ne veut pas dire que vos APL vont baisser. Donnez-moi vos revenus de l'an dernier et <strong>je calcule ce à quoi vous aurez droit</strong> dès maintenant.</div>
+        <div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="chat-foot">
+        <input class="chat-input" placeholder="Votre message..." readonly>
+        <div class="chat-send">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANONYMAT -->
+<section class="anon-sec">
+  <div class="anon-in">
+    <div class="anon-shield">🔐</div>
+    <div class="anon-text">
+      <h2>Votre confidentialité, notre priorité</h2>
+      <p>Chez AxioDroit, vous n'avez pas besoin de donner votre nom, votre adresse ou votre numéro de téléphone. Nous avons besoin de votre situation, pas de votre identité.</p>
+      <div class="anon-pts">
+        <div class="anon-pt">Nous ne demandons jamais vos identifiants ni mots de passe</div>
+        <div class="anon-pt">Vos données ne sont jamais revendues à des tiers</div>
+        <div class="anon-pt">Uniquement par messagerie, aucun appel non sollicité</div>
+        <div class="anon-pt">Suppression de vos données à la demande sous 24h</div>
+        <div class="anon-pt">Conformité RGPD totale</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FAQ -->
+<section class="sec sec-alt" id="faq">
+  <div class="sec-in">
+    <span class="tag tag-blue">Questions fréquentes</span>
+    <h2>Ce que vous voulez savoir</h2>
+    <div class="faq-list">
+      <div class="faq-item faq-first" onclick="this.classList.toggle('open')"><div class="faq-q"><h4>La version gratuite est vraiment sans engagement ?</h4><div class="faq-ico">+</div></div><div class="faq-a">Oui. Aucune carte bancaire requise, aucune inscription obligatoire. Vous simulez vos droits, vous voyez les résultats. Vous ne payez que si vous choisissez d'aller plus loin.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><h4>Qui est l'assistante dans l'offre Premium ?</h4><div class="faq-ico">+</div></div><div class="faq-a">C'est Malika, fondatrice d'AxioDroit, ancienne conseillère CAF avec près de quinze ans d'expérience. Une vraie personne qui répond à vos messages, pas un chatbot.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><h4>Les montants affichés sont-ils garantis ?</h4><div class="faq-ico">+</div></div><div class="faq-a">Les montants sont des estimations prévisionnelles calculées à partir de vos informations et des barèmes officiels. Les montants définitifs sont déterminés par les organismes compétents (CAF, CPAM, etc.) après instruction de votre dossier. Nos estimations sont au plus proche de la réalité.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><h4>Quelle différence avec mesdroitssociaux.gouv.fr ?</h4><div class="faq-ico">+</div></div><div class="faq-a">Le site officiel simule vos droits. AxioDroit va plus loin : audit de vos charges, détection de doublons, lettres prêtes à envoyer, et un accompagnement humain si vous en avez besoin.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><h4>Puis-je résilier à tout moment ?</h4><div class="faq-ico">+</div></div><div class="faq-a">Oui, sans justification, en un clic. Aucun frais de résiliation. Votre abonnement reste actif jusqu'à la fin de la période déjà payée.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><h4>L'assistante est-elle avocate ou comptable ?</h4><div class="faq-ico">+</div></div><div class="faq-a">Non. AxioDroit est un service d'assistance personnelle, pas un cabinet réglementé. Malika vous explique, vous oriente et vous guide dans vos démarches du quotidien. Pour les situations juridiques ou fiscales complexes, elle vous oriente vers les professionnels compétents.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FIN DE PAGE — CONTACT PREMIUM -->
+<section style="background:var(--bg);padding:72px 40px;border-top:1px solid var(--border);">
+  <div style="max-width:700px;margin:0 auto;text-align:center;">
+    <span class="tag tag-mint" style="margin-bottom:16px;">Une question avant de vous lancer ?</span>
+    <h2 style="color:var(--navy);margin-bottom:14px;">On vous répond avant même que vous vous abonniez.</h2>
+    <p style="font-size:15px;max-width:520px;margin:0 auto 32px;">Vous hésitez, vous voulez en savoir plus sur ce qu'AxioDroit peut faire pour votre situation ? Écrivez-nous. On vous répond rapidement.</p>
+    <a href="/cdn-cgi/l/email-protection#8ae9e5e4feebe9fecaebf2e3e5eef8e5e3fea4ecf8b5f9ffe8e0efe9feb7dbffeff9fee3e5e4afb8baebfcebe4feafb8baebe8e5e4e4efe7efe4fe" class="btn btn-mint" style="font-size:15px;padding:14px 32px;">Nous écrire par mail</a>
+  </div>
+</section>
+
+<div class="notice">
+  <div class="notice-in">
+    <div class="notice-icon">ℹ</div>
+    <p><strong>Information importante :</strong> AxioDroit est un service d'assistance personnelle en matière de budget et de droits sociaux. Il ne constitue pas un cabinet juridique, médical, comptable ou de conseil financier réglementé. Les estimations présentées sont indicatives et calculées sur la base des informations déclarées par l'utilisateur. Les montants définitifs sont déterminés par les organismes compétents (CAF, CPAM, etc.) après instruction des dossiers.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-in">
+    <div class="f-logo">Axio<em>Droit</em></div>
+    <div class="f-copy">© 2026 AxioDroit — Tous droits réservés</div>
+    <div class="f-links">
+      <a onclick="openModal('mentions')">Mentions légales</a>
+      <a onclick="openModal('cgu')">CGU</a>
+      <a onclick="openModal('rgpd')">Confidentialité</a>
+      <a href="mailto:contact@axiodroit.fr">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ===== SIMULATEUR DROITS =====
+function sGoTo(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById('spanel'+i).classList.remove('active');
+    const t=document.getElementById('stab'+i);
+    t.classList.remove('active','done');
+    if(i<n) t.classList.add('done');
+  }
+  document.getElementById('spanel'+n).classList.add('active');
+  document.getElementById('stab'+n).classList.add('active');
+  document.getElementById('simulateur').scrollIntoView({behavior:'smooth',block:'start'});
+}
+const sg=id=>document.getElementById(id);
+const sv=id=>parseFloat(sg(id).value)||0;
+const ss=id=>sg(id).value;
+const sfmt=n=>Math.round(n).toLocaleString('fr-FR')+' €';
+
+function sAnalyser(){
+  const prenom=sg('s_prenom').value||'Vous';
+  const situation=ss('s_situation');
+  const enfants=sv('s_enfants');
+  const statut=ss('s_statut');
+  const revenu=sv('s_revenu');
+  const revConj=sv('s_revConj');
+  const revTotal=revenu+revConj;
+  const logement=ss('s_logement');
+  const loyer=sv('s_loyer');
+  const typeLog=ss('s_typeLog');
+  const handicap=ss('s_handicap');
+  const taux=sv('s_taux');
+  const seul=['Célibataire','Divorcé(e)','Veuf(ve)'].includes(situation);
+  const couple=['En couple','Marié(e)'].includes(situation);
+  const sansEmploi=statut==='Sans emploi';
+  const travaille=['Salarié(e)','Auto-entrepreneur'].includes(statut);
+  const retraite=statut==='Retraité(e)';
+
+  const aides=[];
+  const plafRSA=seul?635:couple?952+enfants*191:635;
+  const eligRSA=sansEmploi&&revTotal<plafRSA&&sv('s_age')>=25;
+  aides.push({nom:'RSA',emoji:'💶',elig:eligRSA,val:eligRSA?Math.max(0,plafRSA-revTotal):0,desc:'Revenu de Solidarité Active — complément pour personnes sans emploi',url:'https://www.caf.fr'});
+  const eligPA=travaille&&revTotal<1900;
+  aides.push({nom:"Prime d'activité",emoji:'💪',elig:eligPA,val:eligPA?Math.max(0,Math.min(400,635-revTotal*0.38)):0,desc:'Complément pour travailleurs à faibles revenus',url:'https://www.caf.fr'});
+  const eligAPL=logement==='Locataire'&&typeLog!=='Privé non conventionné'&&revTotal<1800;
+  aides.push({nom:'APL',emoji:'🏠',elig:eligAPL,val:eligAPL?Math.max(0,Math.min(loyer*0.5,350)):0,desc:'Aide Personnalisée au Logement — logement HLM ou conventionné',url:'https://www.caf.fr'});
+  const eligALS=logement==='Locataire'&&typeLog==='Privé non conventionné'&&revTotal<1600;
+  aides.push({nom:'ALS',emoji:'🏡',elig:eligALS,val:eligALS?Math.max(0,Math.min(loyer*0.4,280)):0,desc:'Allocation Logement Sociale — logement privé non conventionné',url:'https://www.caf.fr'});
+  const plafCSS=seul?810:couple?1215:810;
+  const eligCSS=revTotal<plafCSS;
+  aides.push({nom:'CSS (mutuelle gratuite)',emoji:'🏥',elig:eligCSS,val:0,valTxt:eligCSS?'GRATUIT':'Non éligible',desc:'Complémentaire Santé Solidaire — zéro reste à charge',url:'https://www.ameli.fr'});
+  const eligAAH=handicap==='Oui'&&taux>=50;
+  aides.push({nom:'AAH',emoji:'♿',elig:eligAAH,val:eligAAH?(taux>=80?1016:504):0,desc:'Allocation Adulte Handicapé — taux MDPH ≥ 50%',url:'https://www.mdph.fr'});
+  const eligASPA=retraite&&revTotal<1012;
+  aides.push({nom:'ASPA',emoji:'👴',elig:eligASPA,val:eligASPA?Math.max(0,1012-revTotal):0,desc:'Allocation Solidarité Personnes Âgées',url:'https://www.lassuranceretraite.fr'});
+  const revAn=revTotal*12;
+  const eligEn=revAn<11000;
+  aides.push({nom:'Chèque Énergie',emoji:'⚡',elig:eligEn,val:eligEn?(revAn<6000?277:revAn<8500?192:96)/12:0,desc:'Aide annuelle automatique pour factures énergie',url:'https://chequeenergie.gouv.fr'});
+  const eligAF=enfants>=2;
+  aides.push({nom:'Allocations Familiales',emoji:'👨‍👧',elig:eligAF,val:eligAF?(enfants===2?145:enfants===3?330:330+(enfants-3)*186):0,desc:'2+ enfants à charge de moins de 20 ans',url:'https://www.caf.fr'});
+
+  const totalAides=aides.reduce((s,a)=>s+(a.val||0),0);
+
+  const tel=sv('s_tel'),streaming=sv('s_streaming'),assurTel=sv('s_assurTel'),assurCB=sv('s_assurCB'),energie=sv('s_energie'),mutuelle=sv('s_mutuelle');
+  const budget=[];
+  if(tel>20) budget.push({ico:'📱',titre:'Forfait mobile trop cher',desc:`Vous payez ${sfmt(tel)}/mois. Des offres existent à partir de 9,99 €/mois.`,eco:tel-20,level:'alert',action:'Comparer sur meilleurmobile.com'});
+  if(streaming>15) budget.push({ico:'🎬',titre:'Streaming — mutualisation possible',desc:`${sfmt(streaming)}/mois — partagez en famille ou optez pour les offres annuelles.`,eco:streaming-10,level:'warning',action:'Abonnement annuel ou partage famille'});
+  if(assurTel>0&&assurCB>0) budget.push({ico:'⚠️',titre:'Doublon assurances détecté',desc:`Assurance téléphone (${sfmt(assurTel)}) + carte bancaire (${sfmt(assurCB)}) — garanties identiques. Résiliez l'assurance opérateur.`,eco:assurTel,level:'alert',action:'Résiliation assurance opérateur (Loi Hamon)'});
+  if(energie>70) budget.push({ico:'⚡',titre:'Facture énergie optimisable',desc:`${sfmt(energie)}/mois — une comparaison peut vous faire économiser 15 à 25 %.`,eco:Math.round(energie*0.18),level:'warning',action:'Comparer sur energie-info.fr'});
+  if(eligCSS) budget.push({ico:'🏥',titre:'Mutuelle — CSS disponible',desc:`Vous êtes éligible à la CSS (mutuelle gratuite). Économisez ${sfmt(mutuelle)}/mois.`,eco:mutuelle,level:'alert',action:'Demander la CSS sur ameli.fr'});
+  else if(mutuelle>100) budget.push({ico:'🏥',titre:'Mutuelle trop chère',desc:`${sfmt(mutuelle)}/mois — des offres existent entre 50 et 70 €/mois.`,eco:mutuelle-60,level:'warning',action:'Comparer sur meilleurtaux.com'});
+
+  const totalEco=budget.reduce((s,b)=>s+(b.eco||0),0);
+
+  sg('s_resTitre').textContent=`Rapport — ${prenom}`;
+  sg('s_resSub').textContent=`${situation} · ${statut} · ${sfmt(revenu)}/mois`;
+  sg('s_gainTotal').textContent=totalAides>0?sfmt(totalAides):'0 €';
+  sg('s_gainAn').textContent=totalAides>0?`≈ ${sfmt(totalAides*12)} par an`:'';
+
+  const aC=sg('s_aidesContainer');aC.innerHTML='';
+  aides.forEach(a=>{
+    const val=a.valTxt||(a.val>0?`+ ${sfmt(a.val)}/mois`:a.elig?'Voir démarches':'Non éligible');
+    const d=document.createElement('div');
+    d.className=`sim-aide ${a.elig?'elig':'not-elig'}`;
+    d.innerHTML=`<div class="sim-aide-ico">${a.emoji}</div><div><div class="sim-aide-name">${a.nom}</div><div class="sim-aide-val ${a.elig?'':'sim-aide-not'}">${val}</div><div class="sim-aide-desc">${a.desc}</div><a class="sim-aide-link" href="${a.url}" target="_blank">En savoir plus →</a></div>`;
+    aC.appendChild(d);
+  });
+
+  const bC=sg('s_budgetContainer');bC.innerHTML='';
+  if(budget.length===0){bC.innerHTML='<div style="padding:16px;background:var(--mint-light);border-radius:12px;color:var(--mint);font-size:14px;font-weight:600;">Vos charges semblent déjà bien optimisées.</div>';}
+  budget.forEach(b=>{
+    const d=document.createElement('div');
+    d.className=`sim-eco ${b.level}`;
+    d.innerHTML=`<div class="sim-eco-ico">${b.ico}</div><div class="sim-eco-body"><h4>${b.titre}</h4><p>${b.desc}</p>${b.action?`<div class="sim-eco-action">→ ${b.action}</div>`:''}</div><div class="sim-eco-val ${b.eco>0?'':'ok'}">${b.eco>0?`- ${sfmt(b.eco)}`:'✓ OK'}</div>`;
+    bC.appendChild(d);
+  });
+
+  sg('s_totAides').textContent=sfmt(totalAides);
+  sg('s_totEco').textContent=sfmt(totalEco);
+  sg('s_totAn').textContent=sfmt((totalAides+totalEco)*12);
+
+  const lettres=[];
+  const d=new Date().toLocaleDateString('fr-FR');
+  if(eligRSA) lettres.push({titre:'Demande de RSA',txt:`[Prénom NOM]\n[Adresse]\n[Ville, le ${d}]\n\nCAF de [Département]\n\nObjet : Demande de RSA\n\nMadame, Monsieur,\n\nJe souhaite déposer une demande de RSA.\nSituation : ${situation} · ${statut} · Revenus : ${sfmt(revenu)}/mois\n\nJe joins tous les justificatifs nécessaires.\n\nCordialement,\n[Prénom NOM]`});
+  if(eligCSS) lettres.push({titre:'Demande CSS (mutuelle gratuite)',txt:`[Prénom NOM]\n[Adresse]\n[Ville, le ${d}]\n\nCPAM de [Département]\n\nObjet : Demande de CSS\n\nMadame, Monsieur,\n\nJe sollicite la Complémentaire Santé Solidaire.\nSituation : ${situation}${enfants>0?`, ${Math.round(enfants)} enfant(s)`:''}\nRevenus mensuels : ${sfmt(revTotal)}\n\nPièces jointes : pièce d'identité, justificatif domicile, 3 derniers justificatifs de revenus.\n\nCordialement,\n[Prénom NOM]`});
+  if(assurTel>0&&assurCB>0) lettres.push({titre:'Résiliation assurance téléphone (doublon)',txt:`[Prénom NOM]\n[Adresse]\n[Ville, le ${d}]\n\n[Opérateur téléphonique]\n\nObjet : Résiliation assurance téléphone — Contrat n° [XXXXXX]\nEnvoi recommandé avec accusé de réception\n\nMadame, Monsieur,\n\nJe résilie l'assurance téléphone souscrite avec mon forfait. Ma carte bancaire offre des garanties équivalentes, rendant ce contrat redondant.\n\nConformément à la Loi Hamon, je demande la résiliation à la prochaine échéance.\n\nCordialement,\n[Prénom NOM]`});
+  if(eligAPL||eligALS) lettres.push({titre:`Demande aide au logement (${eligAPL?'APL':'ALS'})`,txt:`[Prénom NOM]\n[Adresse]\n[Ville, le ${d}]\n\nCAF de [Département]\n\nObjet : Demande d'aide au logement\n\nMadame, Monsieur,\n\nLocataire au [ADRESSE] depuis le [DATE], je sollicite une aide au logement.\nLoyer : ${sfmt(loyer)}/mois · Revenus : ${sfmt(revenu)}/mois · Situation : ${situation}\n\nJe joins : bail, quittances, justificatifs de revenus.\n\nCordialement,\n[Prénom NOM]`});
+  if(lettres.length===0) lettres.push({titre:'Renseignements sur mes droits',txt:`[Prénom NOM]\n[Adresse]\n[Ville, le ${d}]\n\nCAF de [Département]\n\nObjet : Demande de renseignements sur mes droits\n\nMadame, Monsieur,\n\nJe souhaite faire le point sur mes droits.\nSituation : ${situation} · ${statut} · Revenus : ${sfmt(revenu)}/mois\n\nCordialement,\n[Prénom NOM]`});
+
+  const lC=sg('s_lettresContainer');lC.innerHTML='';
+  lettres.forEach((l,i)=>{
+    const d2=document.createElement('div');d2.className='sim-lettre';
+    d2.innerHTML=`<div class="sim-lettre-hdr" onclick="sToggle(${i})"><h4>${l.titre}</h4><span>▼</span></div><div class="sim-lettre-body" id="slb${i}"><div class="sim-lettre-txt" id="slt${i}">${l.txt}</div><button class="sim-copy" onclick="sCopy(${i})">Copier la lettre</button></div>`;
+    lC.appendChild(d2);
+  });
+  sGoTo(3);
+}
+function sToggle(i){const b=sg('slb'+i);b.classList.toggle('open');}
+function sCopy(i){navigator.clipboard.writeText(sg('slt'+i).innerText).then(()=>{const b=document.querySelectorAll('.sim-copy')[i];b.textContent='Copié !';setTimeout(()=>b.textContent='Copier la lettre',2000);});}
+// ===== FIN SIMULATEUR =====
+
+function openModal(t){
+  const c={
+    mentions:`<h2>Mentions légales</h2><span class="modal-date">Mars 2026</span><h3>Éditeur</h3><p>AxioDroit est un service édité par Athénaïs Conseil, auto-entreprise — SIRET 992 205 070 000 12, 137 Bis Avenue de la Dhuys, 93170 Bagnolet. Contact : contact@axiodroit.fr</p><h3>Nature du service</h3><p>AxioDroit est un service d'assistance personnelle en matière de budget et de droits sociaux. Il ne constitue pas un cabinet juridique, médical, comptable ou de conseil financier réglementé.</p><h3>Limitation de responsabilité</h3><p>Les estimations présentées sont indicatives et calculées sur la base des informations déclarées par l'utilisateur. Les montants définitifs sont déterminés par les organismes compétents (CAF, CPAM, etc.) après instruction des dossiers.</p><h3>Hébergement</h3><p>[Coordonnées hébergeur à compléter après mise en ligne].</p>`,
+    cgu:`<h2>Conditions Générales d'Utilisation</h2><span class="modal-date">En vigueur depuis mars 2026</span><h3>Offres et tarifs</h3><p>Trois niveaux : Découverte (gratuit), Essentiel (9,90 €/mois), Premium (19,90 €/mois). Sans engagement, résiliables à tout moment. Le tarif souscrit est garanti pour les abonnés existants en cas d'évolution des prix.</p><h3>Accès au service</h3><p>L'offre Découverte est accessible sans inscription. Les offres Essentiel et Premium nécessitent un abonnement mensuel via Stripe. Le paiement est sécurisé et les données bancaires ne transitent pas par AxioDroit.</p><h3>Résiliation</h3><p>Résiliation possible à tout moment, sans frais, sans justification. L'abonnement reste actif jusqu'à la fin de la période payée.</p><h3>Limites du service</h3><p>AxioDroit est un service d'assistance personnelle. Il ne fournit pas de conseil juridique, médical ou financier réglementé. Pour toute situation complexe, AxioDroit oriente vers les professionnels compétents.</p><h3>Propriété intellectuelle</h3><p>Tous les contenus sont la propriété exclusive d'Athénaïs Conseil / AxioDroit. Toute reproduction sans autorisation est interdite.</p>`,
+    rgpd:`<h2>Politique de confidentialité</h2><span class="modal-date">Conforme au RGPD — mars 2026</span><h3>Responsable du traitement</h3><p>Athénaïs Conseil, SIRET 992 205 070 000 12. Contact : contact@axiodroit.fr</p><h3>Données collectées</h3><p>Uniquement les informations renseignées volontairement lors de la simulation : situation familiale, revenus, charges. Aucune donnée sensible (santé, origine, etc.) n'est collectée de manière obligatoire.</p><h3>Utilisation des données</h3><p>Vos données servent exclusivement à vous fournir le service AxioDroit. Elles ne sont jamais vendues, ni transmises à des tiers à des fins commerciales.</p><h3>Durée de conservation</h3><p>Les données sont conservées le temps de la relation contractuelle et supprimées dans les 30 jours suivant la résiliation ou la demande de suppression.</p><h3>Vos droits</h3><p>Vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ces droits : contact@axiodroit.fr. Vous pouvez également adresser une réclamation à la CNIL sur cnil.fr.</p><h3>Cookies</h3><p>Ce site n'utilise pas de cookies publicitaires. Seuls des cookies techniques nécessaires au fonctionnement du site peuvent être utilisés.</p>`
+  };
+  document.getElementById('modal-content').innerHTML=c[t]||'';
+  document.getElementById('modal-bg').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal-bg').style.display='none';
+  document.body.style.overflow='';
+}
+</script>
+</body>
+</html>
